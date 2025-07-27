@@ -1,2 +1,4 @@
 # number-theory-algorithms
-Repositório pessoal para desenvolvimento e análise de algoritmos de teoria dos números como hobby e desafio, com foco em testes de primalidade — Personal repository for development and analysis of number theory algorithms as a hobby and challenge, focused on primality tests.
+Repositório pessoal dedicado ao desenvolvimento, implementação e análise de algoritmos de teoria dos números como um hobby e desafio, com ênfase em testes de primalidade e outros problemas matemáticos computacionais.
+— 
+Personal repository dedicated to the development, implementation, and analysis of number theory algorithms as a hobby and challenge, with an emphasis on primality tests and other computational mathematical problems.
