@@ -1,43 +1,27 @@
 #include <stdio.h>
 #include <time.h>
 
-int mdc_usando_mod(int a, int b)
+long long mdc_modulo(long long a, long long b)
 {
-    // tratando o caso em que ambos sao zero
     if (a == 0 && b == 0)
-    {
         return 0;
-    }
-
     while (b != 0)
     {
-        int temp = b;
+        long long temp = b;
         b = a % b;
         a = temp;
     }
     return a;
 }
 
-int mdc_usando_subtracao(int a, int b)
+long long mdc_subtracao(long long a, long long b)
 {
-    // Garante que 'a' serja sempre positivo
     if (a < 0)
-    {
         a = -a;
-    }
-
-    // Garante que 'b' serja sempre positivo
     if (b < 0)
-    {
         b = -b;
-    }
-
-    // tratando o caso em que ambos sao zero
     if (a == 0 && b == 0)
-    {
         return 0;
-    }
-
     while (a != b)
     {
         if (a > b)
@@ -48,15 +32,11 @@ int mdc_usando_subtracao(int a, int b)
     return a;
 }
 
-int mdc_usando_divisao_inteira(int a, int b)
+long long mdc_divisao(long long a, long long b)
 {
-    // tratando o caso em que ambos sao zero
     if (a == 0 && b == 0)
-    {
         return 0;
-    }
-
-    int quociente, resto;
+    long long quociente, resto;
     while (b != 0)
     {
         quociente = a / b;
@@ -67,14 +47,12 @@ int mdc_usando_divisao_inteira(int a, int b)
     return a;
 }
 
-int mdc_stein(int a, int b)
+long long mdc_stein(long long a, long long b)
 {
     if (a == 0)
         return b;
     if (b == 0)
         return a;
-
-    // Remove fatores comuns de 2
     int shift = 0;
     while (((a | b) & 1) == 0)
     {
@@ -82,62 +60,52 @@ int mdc_stein(int a, int b)
         b >>= 1;
         shift++;
     }
-
-    // Remove fatores de 2 de a
     while ((a & 1) == 0)
         a >>= 1;
-
     while (b != 0)
     {
         while ((b & 1) == 0)
             b >>= 1;
-
         if (a > b)
             a = a - b;
         else
             b = b - a;
     }
-
     return a << shift;
 }
 
 int main()
 {
-    int a, b;
-
+    long long a, b;
     printf("Digite dois numeros inteiros: ");
-    scanf("%d %d", &a, &b);
+    scanf("%lld %lld", &a, &b);
 
     clock_t start, end;
-    double cpu_time_used;
+    double tempo;
 
-    // Testando o algoritmo usando mod
     start = clock();
-    int resultado_mod = mdc_usando_mod(a, b);
+    long long r1 = mdc_modulo(a, b);
     end = clock();
-    cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
-    printf("MDC (modulo): %d, Tempo: %f segundos\n", resultado_mod, cpu_time_used);
+    tempo = (double)(end - start) / CLOCKS_PER_SEC;
+    printf("MDC (modulo): %lld | Tempo: %.6f s\n", r1, tempo);
 
-    // Testando o algoritmo usando subtracao
     start = clock();
-    int resultado_subtracao = mdc_usando_subtracao(a, b);
+    long long r2 = mdc_subtracao(a, b);
     end = clock();
-    cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
-    printf("MDC (subtracao): %d, Tempo: %f segundos\n", resultado_subtracao, cpu_time_used);
+    tempo = (double)(end - start) / CLOCKS_PER_SEC;
+    printf("MDC (subtracao): %lld | Tempo: %.6f s\n", r2, tempo);
 
-    // Testando o algoritmo usando divisao inteira
     start = clock();
-    int resultado_divisao_inteira = mdc_usando_divisao_inteira(a, b);
+    long long r3 = mdc_divisao(a, b);
     end = clock();
-    cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
-    printf("MDC (divisao inteira): %d, Tempo: %f segundos\n", resultado_divisao_inteira, cpu_time_used);
+    tempo = (double)(end - start) / CLOCKS_PER_SEC;
+    printf("MDC (divisao inteira): %lld | Tempo: %.6f s\n", r3, tempo);
 
-    // Testando o algoritmo de Stein
     start = clock();
-    int resultado_stein = mdc_stein(a, b);
+    long long r4 = mdc_stein(a, b);
     end = clock();
-    cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
-    printf("MDC (Stein): %d, Tempo: %f segundos\n", resultado_stein, cpu_time_used);
+    tempo = (double)(end - start) / CLOCKS_PER_SEC;
+    printf("MDC (Stein): %lld | Tempo: %.6f s\n", r4, tempo);
 
     return 0;
 }
