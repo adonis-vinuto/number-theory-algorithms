@@ -89,33 +89,24 @@ typedef struct
 /**
  * @brief Input parameters for binary mathematical operations
  *
- * Standardized input structure for operations that take two operands,
- * such as GCD, LCM, modular arithmetic, etc.
+ * Simplified input structure for GCD operations that take two operands.
  */
 typedef struct
 {
-    MathInteger operand_a;      /**< First operand */
-    MathInteger operand_b;      /**< Second operand */
-    bool validate_input;        /**< Whether to validate inputs */
-    MathNatural max_iterations; /**< Maximum allowed iterations */
-    double timeout_ms;          /**< Timeout in milliseconds */
+    MathInteger operand_a; /**< First operand */
+    MathInteger operand_b; /**< Second operand */
 } MathBinaryInput;
 
 /**
  * @brief Performance metrics for algorithm analysis
  *
- * Captures detailed performance data for comparative analysis
- * of different algorithmic implementations.
+ * Simplified metrics focused on what's actually useful for GCD analysis.
  */
 typedef struct
 {
-    double avg_time_ms;          /**< Average execution time */
-    double min_time_ms;          /**< Minimum execution time */
-    double max_time_ms;          /**< Maximum execution time */
-    double stddev_time_ms;       /**< Standard deviation of time */
+    double execution_time_ms;    /**< Last execution time */
     MathNatural total_runs;      /**< Total number of executions */
     MathNatural successful_runs; /**< Number of successful runs */
-    double success_rate;         /**< Success rate percentage */
 } MathPerformanceMetrics;
 
 // ============================================================================
@@ -131,20 +122,14 @@ typedef struct
 /**
  * @brief Algorithm complexity classification
  *
- * Theoretical complexity categories for algorithm classification
- * and comparison purposes.
+ * Simplified complexity categories relevant to GCD algorithms.
  */
 typedef enum
 {
-    COMPLEXITY_CONSTANT,     /**< O(1) - Constant time */
-    COMPLEXITY_LOGARITHMIC,  /**< O(log n) - Logarithmic time */
-    COMPLEXITY_LINEAR,       /**< O(n) - Linear time */
-    COMPLEXITY_LINEARITHMIC, /**< O(n log n) - Linearithmic time */
-    COMPLEXITY_QUADRATIC,    /**< O(n²) - Quadratic time */
-    COMPLEXITY_CUBIC,        /**< O(n³) - Cubic time */
-    COMPLEXITY_EXPONENTIAL,  /**< O(2^n) - Exponential time */
-    COMPLEXITY_FACTORIAL,    /**< O(n!) - Factorial time */
-    COMPLEXITY_UNKNOWN       /**< Unknown or variable complexity */
+    COMPLEXITY_CONSTANT,    /**< O(1) - Constant time */
+    COMPLEXITY_LOGARITHMIC, /**< O(log n) - Logarithmic time (typical for GCD) */
+    COMPLEXITY_LINEAR,      /**< O(n) - Linear time (worst case for some GCD variants) */
+    COMPLEXITY_UNKNOWN      /**< Unknown or variable complexity */
 } MathComplexity;
 
 /**
@@ -170,8 +155,6 @@ typedef enum
 #define MATH_INVALID_VALUE ((MathInteger)(-1))
 #define MATH_ZERO ((MathInteger)(0))
 #define MATH_ONE ((MathInteger)(1))
-#define MATH_DEFAULT_TIMEOUT_MS (5000.0)
-#define MATH_DEFAULT_MAX_ITERATIONS (1000000ULL)
 
 /**
  * @brief Utility macros for mathematical operations
