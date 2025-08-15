@@ -10,11 +10,10 @@
  * Maps to your function: mdc_stein (binary GCD algorithm)
  */
 
-#include "../../core/interfaces/implementation_interface.h"
-#include "../../domain_types.h"
+#include "../../../../../core/interfaces/implementation_interface.h"
+#include "../../../domain_types.h"
 #include "../solution_spec.h"
-#include "../../../infrastructure/utilities/math_utils.c"
-#include "../../../infrastructure/utilities/memory_utils.c"
+#include "../../../../../infrastructure/utilities/math_utils.c"
 
 // ============================================================================
 // ORIGINAL ALGORITHM IMPLEMENTATION
