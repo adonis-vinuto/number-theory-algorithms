@@ -112,19 +112,21 @@ typedef struct
 /**
  * @brief Initialize Extended GCD result
  */
-#define EXTENDED_GCD_INIT(gcd_val, x_val, y_val) { \
-    .gcd = (gcd_val),                              \
-    .coefficient_x = (x_val),                      \
-    .coefficient_y = (y_val),                      \
-    .is_valid = true}
+#define EXTENDED_GCD_INIT(gcd_val, x_val, y_val) \
+    ((ExtendedGcdResult){                        \
+        .gcd = (gcd_val),                        \
+        .coefficient_x = (x_val),                \
+        .coefficient_y = (y_val),                \
+        .is_valid = true})
 
 /**
  * @brief Invalid Extended GCD result
  */
-#define EXTENDED_GCD_INVALID { \
-    .gcd = MATH_INVALID_VALUE, \
-    .coefficient_x = 0,        \
-    .coefficient_y = 0,        \
-    .is_valid = false}
+#define EXTENDED_GCD_INVALID       \
+    ((ExtendedGcdResult){          \
+        .gcd = MATH_INVALID_VALUE, \
+        .coefficient_x = 0,        \
+        .coefficient_y = 0,        \
+        .is_valid = false})
 
 #endif // GCD_DOMAIN_TYPES_H

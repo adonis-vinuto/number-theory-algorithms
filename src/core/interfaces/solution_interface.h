@@ -110,10 +110,10 @@ MathNatural solution_family_list_implementations(
 /**
  * @brief Macro to define solution family metadata
  */
-#define SOLUTION_FAMILY_METADATA(name, desc, family_type, time_comp) { \
-    .name = name,                                                      \
-    .description = desc,                                               \
-    .family_type = family_type,                                        \
+#define SOLUTION_FAMILY_METADATA(name_param, desc_param, family_type_param, time_comp) { \
+    .name = {name_param},                                                                \
+    .description = {desc_param},                                                         \
+    .family_type = family_type_param,                                                    \
     .typical_time_complexity = time_comp}
 
 #endif // SOLUTION_INTERFACE_H

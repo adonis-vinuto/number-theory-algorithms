@@ -11,7 +11,7 @@
 #define EUCLIDEAN_SOLUTION_SPEC_H
 
 #include "../../challenge_definition.h"
-#include "../../core/interfaces/implementation_interface.h"
+#include "../../../../core/interfaces/implementation_interface.h"
 
 // ============================================================================
 // EUCLIDEAN FAMILY ALGORITHMS

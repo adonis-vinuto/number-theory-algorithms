@@ -159,11 +159,11 @@ MathStatus implementation_init_spec(
 /**
  * @brief Macro to define implementation metadata (static initialization safe)
  */
-#define IMPLEMENTATION_METADATA(name, desc, family, time_comp, recursive) { \
-    .name = name,                                                           \
-    .description = desc,                                                    \
-    .family = family,                                                       \
-    .time_complexity = time_comp,                                           \
+#define IMPLEMENTATION_METADATA(name_implementation, desc, family_implementation, time_comp, recursive) { \
+    .name = {name_implementation},                                                                        \
+    .description = {desc},                                                                                \
+    .family = family_implementation,                                                                      \
+    .time_complexity = time_comp,                                                                         \
     .is_recursive = recursive}
 
 /**
