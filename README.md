@@ -10,17 +10,24 @@ Repositório pessoal dedicado à **implementação e análise de algoritmos de T
 
 Atualmente eu implementei apenas os algoritmos de **Máximo Divisor Comum (MDC)** utilizando o Algoritmo de Euclides (formas recursiva e iterativa). Os demais tópicos estão listados como ideias para futuras implementações.
 
-> *So far, only the **Greatest Common Divisor (GCD)** algorithms have been implemented using Euclid’s Algorithm (recursive and iterative versions). Other topics are listed as ideas for future implementation.*
+> *So far, only the **Greatest Common Divisor (GCD)** algorithms have been implemented using Euclid's Algorithm (recursive and iterative versions). Other topics are listed as ideas for future implementation.*
 
 ---
 
-## 🌐 Idiomas | Languages
+## 📚 Documentação | Documentation
 
-- 🇧🇷 [Ler em Português](README.pt.md)
-- 🇺🇸 [Read in English](README.en.md)
+### 📖 READMEs
+
+- 🇧🇷 [Ler em Português](README.pt.md) - Visão geral, estrutura e instruções básicas
+- 🇺🇸 [Read in English](README.en.md) - Overview, structure and basic instructions
+
+### 🏗️ Guias de Arquitetura | Architecture Guides
+
+- 🇧🇷 [Guia de Arquitetura (Português)](guide.md) - Estrutura detalhada do sistema e justificativas de design
+- 🇺🇸 [Architecture Guide (English)](guide.en.md) - Detailed system structure and design rationale
 
 ---
 
-Este projeto está em constante evolução. Navegue pelas versões acima para detalhes, estrutura do projeto, instruções de execução e contribuições.
+Este projeto está em constante evolução. Navegue pelas versões acima para detalhes completos sobre estrutura do projeto, instruções de execução, arquitetura do sistema e contribuições.
 
-> This project is a work in progress. Browse the versions above for full project structure, execution instructions, and contribution guidelines.
+> This project is a work in progress. Browse the versions above for complete details on project structure, execution instructions, system architecture, and contribution guidelines.
