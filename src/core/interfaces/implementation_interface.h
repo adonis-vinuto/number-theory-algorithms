@@ -50,6 +50,8 @@ typedef struct
 struct ImplementationConfig
 {
     bool collect_performance_data; /**< Collect timing data */
+    MathNatural max_iterations;    /**< Maximum iterations allowed */
+    double timeout_ms;             /**< Timeout in milliseconds */
 };
 
 // ============================================================================
@@ -129,28 +131,145 @@ bool implementation_validate_input(
     const ImplementationSpec *spec,
     const MathBinaryInput *input);
 
+/**
+ * @brief Initialize an implementation specification
+ *
+ * @param spec Implementation specification to initialize
+ * @param name Implementation name
+ * @param description Implementation description
+ * @param family Algorithm family
+ * @param time_complexity Time complexity
+ * @param compute_func Computation function
+ * @param validate_func Validation function
+ * @return MATH_SUCCESS if initialization successful
+ */
+MathStatus implementation_init_spec(
+    ImplementationSpec *spec,
+    const char *name,
+    const char *description,
+    MathAlgorithmFamily family,
+    MathComplexity time_complexity,
+    ImplementationComputeFunc compute_func,
+    ImplementationValidateFunc validate_func);
+
 // ============================================================================
 // UTILITY MACROS FOR IMPLEMENTATION DEFINITION
 // ============================================================================
 
 /**
- * @brief Macro to define implementation metadata
+ * @brief Macro to define implementation metadata (static initialization safe)
  */
-#define IMPLEMENTATION_METADATA(name, desc, family, time_comp) { \
-    .name = name,                                                \
-    .description = desc,                                         \
-    .family = family,                                            \
-    .time_complexity = time_comp,                                \
-    .is_recursive = false}
+#define IMPLEMENTATION_METADATA(name, desc, family, time_comp, recursive) { \
+    .name = name,                                                           \
+    .description = desc,                                                    \
+    .family = family,                                                       \
+    .time_complexity = time_comp,                                           \
+    .is_recursive = recursive}
 
 /**
- * @brief Macro to create a complete implementation specification
+ * @brief Macro to create a basic implementation specification (static)
+ *
+ * Note: This creates an uninitialized spec that needs to be initialized
+ * at runtime using implementation_init_spec() to avoid function calls
+ * in static initialization context.
  */
-#define DEFINE_IMPLEMENTATION_SPEC(name, compute_fn, validate_fn, metadata_def) \
-    {                                                                           \
-        .metadata = metadata_def,                                               \
-        .compute = compute_fn,                                                  \
-        .validate = validate_fn,                                                \
-        .performance = {0}}
+#define DEFINE_IMPLEMENTATION_SPEC_STATIC(name_str, compute_fn, validate_fn, meta_name, meta_desc, meta_family, meta_complexity, meta_recursive) \
+    {                                                                                                                                            \
+        .metadata = IMPLEMENTATION_METADATA(meta_name, meta_desc, meta_family, meta_complexity, meta_recursive),                                 \
+        .compute = compute_fn,                                                                                                                   \
+        .validate = validate_fn,                                                                                                                 \
+        .performance = MATH_PERFORMANCE_METRICS_INIT}
+
+/**
+ * @brief Helper macro for creating implementation specs with standard parameters
+ */
+#define STANDARD_IMPLEMENTATION_SPEC(id, display_name, desc, family, complexity, compute_fn, validate_fn) \
+    DEFINE_IMPLEMENTATION_SPEC_STATIC(#id, compute_fn, validate_fn, display_name, desc, family, complexity, false)
+
+/**
+ * @brief Helper macro for creating recursive implementation specs
+ */
+#define RECURSIVE_IMPLEMENTATION_SPEC(id, display_name, desc, family, complexity, compute_fn, validate_fn) \
+    DEFINE_IMPLEMENTATION_SPEC_STATIC(#id, compute_fn, validate_fn, display_name, desc, family, complexity, true)
+
+// ============================================================================
+// IMPLEMENTATION REGISTRY HELPERS
+// ============================================================================
+
+/**
+ * @brief Maximum number of implementations that can be registered globally
+ */
+#define MAX_GLOBAL_IMPLEMENTATIONS 32
+
+/**
+ * @brief Initialize implementation specification at runtime
+ *
+ * Use this function to properly initialize specs that need dynamic setup.
+ *
+ * @param spec Specification to initialize
+ * @param name Implementation name
+ * @param description Implementation description
+ * @param family Algorithm family
+ * @param complexity Time complexity
+ * @param is_recursive Whether implementation is recursive
+ * @param compute_func Computation function
+ * @param validate_func Validation function
+ */
+void implementation_setup_spec(
+    ImplementationSpec *spec,
+    const char *name,
+    const char *description,
+    MathAlgorithmFamily family,
+    MathComplexity complexity,
+    bool is_recursive,
+    ImplementationComputeFunc compute_func,
+    ImplementationValidateFunc validate_func);
+
+/**
+ * @brief Reset performance metrics for an implementation
+ *
+ * @param spec Implementation specification
+ */
+void implementation_reset_performance(ImplementationSpec *spec);
+
+/**
+ * @brief Update performance metrics after execution
+ *
+ * @param spec Implementation specification
+ * @param execution_time Execution time in milliseconds
+ * @param was_successful Whether execution was successful
+ */
+void implementation_update_performance(
+    ImplementationSpec *spec,
+    double execution_time,
+    bool was_successful);
+
+// ============================================================================
+// IMPLEMENTATION VALIDATION HELPERS
+// ============================================================================
+
+/**
+ * @brief Check if implementation specification is valid
+ *
+ * @param spec Implementation specification to validate
+ * @return true if specification is valid
+ */
+bool implementation_is_valid_spec(const ImplementationSpec *spec);
+
+/**
+ * @brief Get implementation name safely
+ *
+ * @param spec Implementation specification
+ * @return Implementation name or "Unknown" if invalid
+ */
+const char *implementation_get_name(const ImplementationSpec *spec);
+
+/**
+ * @brief Get implementation description safely
+ *
+ * @param spec Implementation specification
+ * @return Implementation description or "No description" if invalid
+ */
+const char *implementation_get_description(const ImplementationSpec *spec);
 
 #endif // IMPLEMENTATION_INTERFACE_H

@@ -12,6 +12,7 @@
 #define BINARY_SOLUTION_SPEC_H
 
 #include "../../challenge_definition.h"
+#include "../../core/interfaces/implementation_interface.h"
 
 // ============================================================================
 // BINARY FAMILY ALGORITHMS

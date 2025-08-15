@@ -10,6 +10,8 @@
  * Maps to your function: mdc_stein (binary GCD algorithm)
  */
 
+#include "../../core/interfaces/implementation_interface.h"
+#include "../../domain_types.h"
 #include "../solution_spec.h"
 #include "../../../infrastructure/utilities/math_utils.c"
 #include "../../../infrastructure/utilities/memory_utils.c"
@@ -123,21 +125,22 @@ MathResult stein_binary_compute(const MathBinaryInput *input)
 }
 
 // ============================================================================
-// IMPLEMENTATION SPECIFICATION
+// IMPLEMENTATION SPECIFICATION (Global Variable)
 // ============================================================================
 
 /**
  * @brief Implementation specification for Stein's binary GCD algorithm
  */
-ImplementationSpec stein_binary_spec = DEFINE_IMPLEMENTATION_SPEC(
-    "stein_binary",
-    stein_binary_compute,
-    stein_validate,
-    IMPLEMENTATION_METADATA(
+ImplementationSpec stein_binary_spec = {
+    .metadata = IMPLEMENTATION_METADATA(
         "Stein Binary GCD",
         "Stein's binary GCD algorithm using bit operations instead of division",
         ALGORITHM_FAMILY_BINARY,
-        COMPLEXITY_LOGARITHMIC));
+        COMPLEXITY_LOGARITHMIC,
+        false),
+    .compute = stein_binary_compute,
+    .validate = stein_validate,
+    .performance = MATH_PERFORMANCE_METRICS_INIT};
 
 // ============================================================================
 // BINARY ALGORITHM CHARACTERISTICS
@@ -300,4 +303,17 @@ GcdInteger stein_compute_direct(GcdInteger a, GcdInteger b)
 const ImplementationSpec *stein_get_algorithm_info(void)
 {
     return &stein_binary_spec;
+}
+
+/**
+ * @brief Initialize Stein binary specification
+ *
+ * Call this function to ensure the spec is properly initialized.
+ * This is automatically called by the registry system.
+ */
+void stein_binary_init_spec(void)
+{
+    // Spec is already initialized as global variable with static data
+    // This function exists for consistency with the interface pattern
+    // but no additional initialization is needed for this implementation
 }

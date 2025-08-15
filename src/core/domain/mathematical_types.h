@@ -87,26 +87,42 @@ typedef struct
 // ============================================================================
 
 /**
+ * @brief Default configuration constants
+ */
+#define MATH_DEFAULT_MAX_ITERATIONS 1000000 /**< Default maximum iterations */
+#define MATH_DEFAULT_TIMEOUT_MS 10000.0     /**< Default timeout in milliseconds */
+
+/**
  * @brief Input parameters for binary mathematical operations
  *
- * Simplified input structure for GCD operations that take two operands.
+ * Enhanced input structure for GCD operations that take two operands
+ * with additional configuration and validation options.
  */
 typedef struct
 {
-    MathInteger operand_a; /**< First operand */
-    MathInteger operand_b; /**< Second operand */
+    MathInteger operand_a;      /**< First operand */
+    MathInteger operand_b;      /**< Second operand */
+    bool validate_input;        /**< Whether to validate input parameters */
+    MathNatural max_iterations; /**< Maximum number of iterations allowed */
+    double timeout_ms;          /**< Timeout in milliseconds */
 } MathBinaryInput;
 
 /**
  * @brief Performance metrics for algorithm analysis
  *
- * Simplified metrics focused on what's actually useful for GCD analysis.
+ * Comprehensive metrics for analyzing algorithm performance,
+ * including timing statistics and success rates.
  */
 typedef struct
 {
-    double execution_time_ms;    /**< Last execution time */
+    double avg_time_ms;          /**< Average execution time in milliseconds */
+    double min_time_ms;          /**< Minimum execution time recorded */
+    double max_time_ms;          /**< Maximum execution time recorded */
+    double stddev_time_ms;       /**< Standard deviation of execution times */
+    double execution_time_ms;    /**< Last execution time (for compatibility) */
     MathNatural total_runs;      /**< Total number of executions */
     MathNatural successful_runs; /**< Number of successful runs */
+    double success_rate;         /**< Success rate (successful_runs / total_runs) */
 } MathPerformanceMetrics;
 
 // ============================================================================
@@ -183,5 +199,28 @@ typedef enum
     .is_valid = false,                    \
     .iterations = 0,                      \
     .execution_time_ms = 0.0}
+
+/**
+ * @brief Binary input initialization macro
+ */
+#define MATH_BINARY_INPUT_INIT(a, b) {             \
+    .operand_a = (a),                              \
+    .operand_b = (b),                              \
+    .validate_input = true,                        \
+    .max_iterations = MATH_DEFAULT_MAX_ITERATIONS, \
+    .timeout_ms = MATH_DEFAULT_TIMEOUT_MS}
+
+/**
+ * @brief Performance metrics initialization macro
+ */
+#define MATH_PERFORMANCE_METRICS_INIT { \
+    .avg_time_ms = 0.0,                 \
+    .min_time_ms = 0.0,                 \
+    .max_time_ms = 0.0,                 \
+    .stddev_time_ms = 0.0,              \
+    .execution_time_ms = 0.0,           \
+    .total_runs = 0,                    \
+    .successful_runs = 0,               \
+    .success_rate = 0.0}
 
 #endif // MATHEMATICAL_TYPES_H

@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <limits.h>
+#include <math.h>
 
 // Platform detection for high-precision timing
 #if defined(__unix__) || defined(__unix) || (defined(__APPLE__) && defined(__MACH__)) || defined(_POSIX_VERSION)
@@ -104,6 +105,67 @@ MathNatural math_count_trailing_zeros(MathInteger value)
     return count;
 }
 
+/**
+ * @brief Safe modulo operation with sign handling
+ *
+ * @param dividend Dividend
+ * @param divisor Divisor (must be non-zero)
+ * @param result Pointer to store result
+ * @return MATH_SUCCESS if successful, error code otherwise
+ */
+MathStatus math_safe_modulo(MathInteger dividend, MathInteger divisor, MathInteger *result)
+{
+    if (result == NULL)
+    {
+        return MATH_ERROR_INVALID_INPUT;
+    }
+
+    if (divisor == 0)
+    {
+        return MATH_ERROR_DIVISION_BY_ZERO;
+    }
+
+    *result = dividend % divisor;
+    return MATH_SUCCESS;
+}
+
+/**
+ * @brief Safe division operation with overflow check
+ *
+ * @param dividend Dividend
+ * @param divisor Divisor (must be non-zero)
+ * @param quotient Pointer to store quotient
+ * @param remainder Pointer to store remainder (optional)
+ * @return MATH_SUCCESS if successful, error code otherwise
+ */
+MathStatus math_safe_division(MathInteger dividend, MathInteger divisor, MathInteger *quotient, MathInteger *remainder)
+{
+    if (quotient == NULL)
+    {
+        return MATH_ERROR_INVALID_INPUT;
+    }
+
+    if (divisor == 0)
+    {
+        return MATH_ERROR_DIVISION_BY_ZERO;
+    }
+
+    // Check for overflow: LLONG_MIN / -1 would overflow
+    if (dividend == LLONG_MIN && divisor == -1)
+    {
+        return MATH_ERROR_OVERFLOW;
+    }
+
+    *quotient = dividend / divisor;
+
+    if (remainder != NULL)
+    {
+        *remainder = dividend % divisor;
+    }
+
+    return MATH_SUCCESS;
+}
+
 // ============================================================================
 // TIMING UTILITIES (for performance measurement)
 // ============================================================================
@@ -134,6 +196,23 @@ double math_get_time_ms(void)
     }
 
     return (double)current_clock * 1000.0 / CLOCKS_PER_SEC;
+}
+
+/**
+ * @brief Calculate elapsed time between two timestamps
+ *
+ * @param start_time Start timestamp in milliseconds
+ * @param end_time End timestamp in milliseconds
+ * @return Elapsed time in milliseconds, or 0.0 if invalid
+ */
+double math_elapsed_time_ms(double start_time, double end_time)
+{
+    if (start_time < 0.0 || end_time < 0.0 || end_time < start_time)
+    {
+        return 0.0;
+    }
+
+    return end_time - start_time;
 }
 
 // ============================================================================
@@ -193,6 +272,32 @@ MathBinaryInput math_create_binary_input(MathInteger a, MathInteger b)
         .validate_input = true,
         .max_iterations = MATH_DEFAULT_MAX_ITERATIONS,
         .timeout_ms = MATH_DEFAULT_TIMEOUT_MS};
+    return input;
+}
+
+/**
+ * @brief Create binary input with custom configuration
+ *
+ * @param a First operand
+ * @param b Second operand
+ * @param validate_input Whether to validate input
+ * @param max_iterations Maximum iterations allowed
+ * @param timeout_ms Timeout in milliseconds
+ * @return Initialized MathBinaryInput structure
+ */
+MathBinaryInput math_create_binary_input_custom(
+    MathInteger a,
+    MathInteger b,
+    bool validate_input,
+    MathNatural max_iterations,
+    double timeout_ms)
+{
+    MathBinaryInput input = {
+        .operand_a = a,
+        .operand_b = b,
+        .validate_input = validate_input,
+        .max_iterations = max_iterations,
+        .timeout_ms = timeout_ms};
     return input;
 }
 
@@ -275,4 +380,133 @@ bool math_handle_gcd_special_cases(MathInteger a, MathInteger b, MathResult *res
     }
 
     return false; // No special case, proceed with normal computation
+}
+
+/**
+ * @brief Validate GCD computation input
+ *
+ * @param a First operand
+ * @param b Second operand
+ * @return MATH_SUCCESS if input is valid, error code otherwise
+ */
+MathStatus math_validate_gcd_input(MathInteger a, MathInteger b)
+{
+    // Check for potential overflow conditions
+    if (a == LLONG_MIN || b == LLONG_MIN)
+    {
+        return MATH_ERROR_OVERFLOW;
+    }
+
+    // GCD can handle any integer inputs, including negatives and zero
+    return MATH_SUCCESS;
+}
+
+// ============================================================================
+// MATHEMATICAL STATISTICS UTILITIES
+// ============================================================================
+
+/**
+ * @brief Calculate average of execution times
+ *
+ * @param times Array of execution times
+ * @param count Number of times
+ * @return Average time, or 0.0 if invalid input
+ */
+double math_calculate_average_time(const double *times, MathNatural count)
+{
+    if (times == NULL || count == 0)
+    {
+        return 0.0;
+    }
+
+    double sum = 0.0;
+    for (MathNatural i = 0; i < count; i++)
+    {
+        if (times[i] >= 0.0)
+        {
+            sum += times[i];
+        }
+    }
+
+    return sum / (double)count;
+}
+
+/**
+ * @brief Find minimum execution time
+ *
+ * @param times Array of execution times
+ * @param count Number of times
+ * @return Minimum time, or 0.0 if invalid input
+ */
+double math_find_min_time(const double *times, MathNatural count)
+{
+    if (times == NULL || count == 0)
+    {
+        return 0.0;
+    }
+
+    double min_time = times[0];
+    for (MathNatural i = 1; i < count; i++)
+    {
+        if (times[i] >= 0.0 && times[i] < min_time)
+        {
+            min_time = times[i];
+        }
+    }
+
+    return min_time;
+}
+
+/**
+ * @brief Find maximum execution time
+ *
+ * @param times Array of execution times
+ * @param count Number of times
+ * @return Maximum time, or 0.0 if invalid input
+ */
+double math_find_max_time(const double *times, MathNatural count)
+{
+    if (times == NULL || count == 0)
+    {
+        return 0.0;
+    }
+
+    double max_time = times[0];
+    for (MathNatural i = 1; i < count; i++)
+    {
+        if (times[i] >= 0.0 && times[i] > max_time)
+        {
+            max_time = times[i];
+        }
+    }
+
+    return max_time;
+}
+
+/**
+ * @brief Calculate standard deviation of execution times
+ *
+ * @param times Array of execution times
+ * @param count Number of times
+ * @param average Average time (pre-calculated)
+ * @return Standard deviation, or 0.0 if invalid input
+ */
+double math_calculate_stddev_time(const double *times, MathNatural count, double average)
+{
+    if (times == NULL || count <= 1)
+    {
+        return 0.0;
+    }
+
+    double sum_sq_diff = 0.0;
+    for (MathNatural i = 0; i < count; i++)
+    {
+        if (times[i] >= 0.0)
+        {
+            double diff = times[i] - average;
+            sum_sq_diff += diff * diff;
+        }
+    }
+
+    return sqrt(sum_sq_diff / (double)(count - 1));
 }

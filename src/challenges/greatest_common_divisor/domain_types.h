@@ -11,6 +11,7 @@
 #define GCD_DOMAIN_TYPES_H
 
 #include "../../core/domain/mathematical_types.h"
+#include "../../core/interfaces/implementation_interface.h"
 
 // ============================================================================
 // GCD-SPECIFIC TYPE ALIASES

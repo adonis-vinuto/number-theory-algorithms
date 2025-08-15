@@ -55,6 +55,33 @@ MathStatus memory_safe_strcpy(char *dest, const char *src, size_t dest_size)
     return MATH_SUCCESS;
 }
 
+/**
+ * @brief Safe string concatenation with bounds checking
+ *
+ * @param dest Destination buffer
+ * @param src Source string to append
+ * @param dest_size Total size of destination buffer
+ * @return MATH_SUCCESS if successful, error code otherwise
+ */
+MathStatus memory_safe_strcat(char *dest, const char *src, size_t dest_size)
+{
+    if (dest == NULL || src == NULL || dest_size == 0)
+    {
+        return MATH_ERROR_INVALID_INPUT;
+    }
+
+    size_t dest_len = strlen(dest);
+    size_t src_len = strlen(src);
+
+    if (dest_len + src_len >= dest_size)
+    {
+        return MATH_ERROR_INVALID_INPUT; // Not enough space
+    }
+
+    strcat(dest, src);
+    return MATH_SUCCESS;
+}
+
 // ============================================================================
 // STRUCTURE INITIALIZATION
 // ============================================================================
@@ -108,10 +135,57 @@ void memory_init_performance_metrics(MathPerformanceMetrics *metrics)
         metrics->min_time_ms = 0.0;
         metrics->max_time_ms = 0.0;
         metrics->stddev_time_ms = 0.0;
+        metrics->execution_time_ms = 0.0;
         metrics->total_runs = 0;
         metrics->successful_runs = 0;
         metrics->success_rate = 0.0;
     }
+}
+
+/**
+ * @brief Copy MathResult structure safely
+ *
+ * @param dest Destination MathResult
+ * @param src Source MathResult
+ * @return MATH_SUCCESS if successful
+ */
+MathStatus memory_copy_math_result(MathResult *dest, const MathResult *src)
+{
+    if (dest == NULL || src == NULL)
+    {
+        return MATH_ERROR_INVALID_INPUT;
+    }
+
+    dest->value = src->value;
+    dest->status = src->status;
+    dest->is_valid = src->is_valid;
+    dest->iterations = src->iterations;
+    dest->execution_time_ms = src->execution_time_ms;
+
+    return MATH_SUCCESS;
+}
+
+/**
+ * @brief Copy MathBinaryInput structure safely
+ *
+ * @param dest Destination MathBinaryInput
+ * @param src Source MathBinaryInput
+ * @return MATH_SUCCESS if successful
+ */
+MathStatus memory_copy_binary_input(MathBinaryInput *dest, const MathBinaryInput *src)
+{
+    if (dest == NULL || src == NULL)
+    {
+        return MATH_ERROR_INVALID_INPUT;
+    }
+
+    dest->operand_a = src->operand_a;
+    dest->operand_b = src->operand_b;
+    dest->validate_input = src->validate_input;
+    dest->max_iterations = src->max_iterations;
+    dest->timeout_ms = src->timeout_ms;
+
+    return MATH_SUCCESS;
 }
 
 // ============================================================================
@@ -172,4 +246,109 @@ bool memory_validate_binary_input(const MathBinaryInput *input)
     }
 
     return true;
+}
+
+/**
+ * @brief Basic validation of a MathPerformanceMetrics structure
+ *
+ * @param metrics Pointer to validate
+ * @return true if basic structure is valid, false otherwise
+ */
+bool memory_validate_performance_metrics(const MathPerformanceMetrics *metrics)
+{
+    if (metrics == NULL)
+    {
+        return false;
+    }
+
+    // Check for non-negative times
+    if (metrics->avg_time_ms < 0.0 ||
+        metrics->min_time_ms < 0.0 ||
+        metrics->max_time_ms < 0.0 ||
+        metrics->stddev_time_ms < 0.0 ||
+        metrics->execution_time_ms < 0.0)
+    {
+        return false;
+    }
+
+    // Check success rate is between 0 and 1
+    if (metrics->success_rate < 0.0 || metrics->success_rate > 1.0)
+    {
+        return false;
+    }
+
+    // Check consistency between total and successful runs
+    if (metrics->successful_runs > metrics->total_runs)
+    {
+        return false;
+    }
+
+    return true;
+}
+
+// ============================================================================
+// UTILITY FUNCTIONS
+// ============================================================================
+
+/**
+ * @brief Clear/zero out memory safely
+ *
+ * @param ptr Pointer to memory to clear
+ * @param size Size of memory block in bytes
+ */
+void memory_clear(void *ptr, size_t size)
+{
+    if (ptr != NULL && size > 0)
+    {
+        memset(ptr, 0, size);
+    }
+}
+
+/**
+ * @brief Check if pointer is aligned properly
+ *
+ * @param ptr Pointer to check
+ * @param alignment Required alignment (must be power of 2)
+ * @return true if pointer is properly aligned
+ */
+bool memory_is_aligned(const void *ptr, size_t alignment)
+{
+    if (ptr == NULL || alignment == 0)
+    {
+        return false;
+    }
+
+    // Check if alignment is power of 2
+    if ((alignment & (alignment - 1)) != 0)
+    {
+        return false;
+    }
+
+    return ((uintptr_t)ptr & (alignment - 1)) == 0;
+}
+
+/**
+ * @brief Get the next aligned address
+ *
+ * @param ptr Current pointer
+ * @param alignment Required alignment (must be power of 2)
+ * @return Next aligned address or NULL if invalid input
+ */
+void *memory_align_up(void *ptr, size_t alignment)
+{
+    if (ptr == NULL || alignment == 0)
+    {
+        return NULL;
+    }
+
+    // Check if alignment is power of 2
+    if ((alignment & (alignment - 1)) != 0)
+    {
+        return NULL;
+    }
+
+    uintptr_t addr = (uintptr_t)ptr;
+    uintptr_t aligned = (addr + alignment - 1) & ~(alignment - 1);
+
+    return (void *)aligned;
 }

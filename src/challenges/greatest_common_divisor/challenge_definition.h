@@ -14,6 +14,7 @@
 #define GCD_CHALLENGE_DEFINITION_H
 
 #include "domain_types.h"
+#include "../../core/interfaces/implementation_interface.h"
 
 // ============================================================================
 // CORE GCD ALGORITHM INTERFACE

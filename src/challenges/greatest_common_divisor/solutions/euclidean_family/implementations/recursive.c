@@ -10,6 +10,8 @@
  * Maps to your functions: mdc_mod, mdc_sub, mdc_ext
  */
 
+#include "../../core/interfaces/implementation_interface.h"
+#include "../../domain_types.h"
 #include "../solution_spec.h"
 #include "../../../infrastructure/utilities/math_utils.c"
 #include "../../../infrastructure/utilities/memory_utils.c"
@@ -219,47 +221,50 @@ ExtendedGcdResult euclidean_extended_compute_full(GcdInteger a, GcdInteger b, Gc
 }
 
 // ============================================================================
-// IMPLEMENTATION SPECIFICATIONS
+// IMPLEMENTATION SPECIFICATIONS (Global Variables)
 // ============================================================================
 
 /**
  * @brief Implementation specification for recursive Euclidean modulo algorithm
  */
-ImplementationSpec euclidean_recursive_modulo_spec = DEFINE_IMPLEMENTATION_SPEC(
-    "euclidean_recursive_modulo",
-    euclidean_recursive_modulo_compute,
-    recursive_euclidean_validate,
-    IMPLEMENTATION_METADATA(
+ImplementationSpec euclidean_recursive_modulo_spec = {
+    .metadata = IMPLEMENTATION_METADATA(
         "Recursive Euclidean Modulo",
         "Recursive Euclidean algorithm using modulo operator (%)",
         ALGORITHM_FAMILY_EUCLIDEAN,
-        COMPLEXITY_LOGARITHMIC));
+        COMPLEXITY_LOGARITHMIC,
+        true),
+    .compute = euclidean_recursive_modulo_compute,
+    .validate = recursive_euclidean_validate,
+    .performance = MATH_PERFORMANCE_METRICS_INIT};
 
 /**
  * @brief Implementation specification for recursive Euclidean subtraction algorithm
  */
-ImplementationSpec euclidean_recursive_subtraction_spec = DEFINE_IMPLEMENTATION_SPEC(
-    "euclidean_recursive_subtraction",
-    euclidean_recursive_subtraction_compute,
-    recursive_euclidean_validate,
-    IMPLEMENTATION_METADATA(
+ImplementationSpec euclidean_recursive_subtraction_spec = {
+    .metadata = IMPLEMENTATION_METADATA(
         "Recursive Euclidean Subtraction",
         "Recursive Euclidean algorithm using repeated subtraction",
         ALGORITHM_FAMILY_EUCLIDEAN,
-        COMPLEXITY_LINEAR));
+        COMPLEXITY_LINEAR,
+        true),
+    .compute = euclidean_recursive_subtraction_compute,
+    .validate = recursive_euclidean_validate,
+    .performance = MATH_PERFORMANCE_METRICS_INIT};
 
 /**
  * @brief Implementation specification for extended Euclidean algorithm
  */
-ImplementationSpec euclidean_extended_spec = DEFINE_IMPLEMENTATION_SPEC(
-    "euclidean_extended",
-    euclidean_extended_compute,
-    recursive_euclidean_validate,
-    IMPLEMENTATION_METADATA(
+ImplementationSpec euclidean_extended_spec = {
+    .metadata = IMPLEMENTATION_METADATA(
         "Extended Euclidean",
         "Extended Euclidean algorithm computing GCD and Bezout coefficients",
         ALGORITHM_FAMILY_EUCLIDEAN,
-        COMPLEXITY_LOGARITHMIC));
+        COMPLEXITY_LOGARITHMIC,
+        true),
+    .compute = euclidean_extended_compute,
+    .validate = recursive_euclidean_validate,
+    .performance = MATH_PERFORMANCE_METRICS_INIT};
 
 // ============================================================================
 // FAMILY INTEGRATION FUNCTIONS
@@ -325,4 +330,17 @@ bool is_recursive_euclidean_variant(GcdAlgorithmVariant variant)
     return (variant == GCD_RECURSIVE_MODULO ||
             variant == GCD_RECURSIVE_SUBTRACTION ||
             variant == GCD_EXTENDED_EUCLIDEAN);
+}
+
+/**
+ * @brief Initialize all recursive Euclidean specifications
+ *
+ * Call this function to ensure all specs are properly initialized.
+ * This is automatically called by the registry system.
+ */
+void recursive_euclidean_init_specs(void)
+{
+    // Specs are already initialized as global variables with static data
+    // This function exists for consistency with the interface pattern
+    // but no additional initialization is needed for these implementations
 }

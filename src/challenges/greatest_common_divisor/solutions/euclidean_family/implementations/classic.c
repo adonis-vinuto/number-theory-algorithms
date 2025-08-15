@@ -10,6 +10,8 @@
  * Maps to your functions: mdc_modulo, mdc_subtracao, mdc_divisao
  */
 
+#include "../../core/interfaces/implementation_interface.h"
+#include "../../domain_types.h"
 #include "../solution_spec.h"
 #include "../../../infrastructure/utilities/math_utils.c"
 #include "../../../infrastructure/utilities/memory_utils.c"
@@ -194,47 +196,50 @@ MathResult euclidean_division_compute(const MathBinaryInput *input)
 }
 
 // ============================================================================
-// IMPLEMENTATION SPECIFICATIONS
+// IMPLEMENTATION SPECIFICATIONS (Global Variables)
 // ============================================================================
 
 /**
  * @brief Implementation specification for Euclidean modulo algorithm
  */
-ImplementationSpec euclidean_modulo_spec = DEFINE_IMPLEMENTATION_SPEC(
-    "euclidean_modulo",
-    euclidean_modulo_compute,
-    classic_euclidean_validate,
-    IMPLEMENTATION_METADATA(
+ImplementationSpec euclidean_modulo_spec = {
+    .metadata = IMPLEMENTATION_METADATA(
         "Euclidean Modulo",
         "Classic Euclidean algorithm using modulo operator (%)",
         ALGORITHM_FAMILY_EUCLIDEAN,
-        COMPLEXITY_LOGARITHMIC));
+        COMPLEXITY_LOGARITHMIC,
+        false),
+    .compute = euclidean_modulo_compute,
+    .validate = classic_euclidean_validate,
+    .performance = MATH_PERFORMANCE_METRICS_INIT};
 
 /**
  * @brief Implementation specification for Euclidean subtraction algorithm
  */
-ImplementationSpec euclidean_subtraction_spec = DEFINE_IMPLEMENTATION_SPEC(
-    "euclidean_subtraction",
-    euclidean_subtraction_compute,
-    classic_euclidean_validate,
-    IMPLEMENTATION_METADATA(
+ImplementationSpec euclidean_subtraction_spec = {
+    .metadata = IMPLEMENTATION_METADATA(
         "Euclidean Subtraction",
         "Classic Euclidean algorithm using repeated subtraction",
         ALGORITHM_FAMILY_EUCLIDEAN,
-        COMPLEXITY_LINEAR));
+        COMPLEXITY_LINEAR,
+        false),
+    .compute = euclidean_subtraction_compute,
+    .validate = classic_euclidean_validate,
+    .performance = MATH_PERFORMANCE_METRICS_INIT};
 
 /**
  * @brief Implementation specification for Euclidean division algorithm
  */
-ImplementationSpec euclidean_division_spec = DEFINE_IMPLEMENTATION_SPEC(
-    "euclidean_division",
-    euclidean_division_compute,
-    classic_euclidean_validate,
-    IMPLEMENTATION_METADATA(
+ImplementationSpec euclidean_division_spec = {
+    .metadata = IMPLEMENTATION_METADATA(
         "Euclidean Division",
         "Classic Euclidean algorithm using integer division",
         ALGORITHM_FAMILY_EUCLIDEAN,
-        COMPLEXITY_LOGARITHMIC));
+        COMPLEXITY_LOGARITHMIC,
+        false),
+    .compute = euclidean_division_compute,
+    .validate = classic_euclidean_validate,
+    .performance = MATH_PERFORMANCE_METRICS_INIT};
 
 // ============================================================================
 // FAMILY INTEGRATION FUNCTIONS
@@ -300,4 +305,17 @@ bool is_classic_euclidean_variant(GcdAlgorithmVariant variant)
     return (variant == GCD_EUCLIDEAN_MODULO ||
             variant == GCD_EUCLIDEAN_SUBTRACTION ||
             variant == GCD_EUCLIDEAN_DIVISION);
+}
+
+/**
+ * @brief Initialize all classic Euclidean specifications
+ *
+ * Call this function to ensure all specs are properly initialized.
+ * This is automatically called by the registry system.
+ */
+void classic_euclidean_init_specs(void)
+{
+    // Specs are already initialized as global variables with static data
+    // This function exists for consistency with the interface pattern
+    // but no additional initialization is needed for these implementations
 }
