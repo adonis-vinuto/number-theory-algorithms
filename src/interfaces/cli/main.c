@@ -1,7 +1,7 @@
 /**
  * @file main.c
  * @brief Main entry point for the GCD Algorithm Analysis Tool
- * @author Number Theory Algorithms Project
+ * @author Adonis G G vinuto
  * @version 1.0
  *
  * This is the main entry point for the command-line GCD algorithm analysis tool.
