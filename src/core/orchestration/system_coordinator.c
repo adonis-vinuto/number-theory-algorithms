@@ -12,8 +12,8 @@
  * convenience functions for common use cases.
  */
 
-#include "../../challenges/greatest_common_divisor/challenge_services/solution_registry.c"
-#include "../../challenges/greatest_common_divisor/challenge_services/mdc_analyzer.c"
+#include "../../challenges/greatest_common_divisor/challenge_services/solution_registry.h"
+#include "../../challenges/greatest_common_divisor/challenge_services/mdc_analyzer.h"
 #include "../../infrastructure/utilities/math_utils.c"
 #include "../../infrastructure/utilities/memory_utils.c"
 #include <stdio.h>

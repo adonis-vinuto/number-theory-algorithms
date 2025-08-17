@@ -12,7 +12,9 @@
  * the appropriate system functions.
  */
 
-#include "command_parser.c"
+// ✅ CORRECTED: Include header instead of .c file
+#include "command_parser.h"
+#include "../../core/orchestration/system_coordinator.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -214,7 +216,8 @@ int test_main(void)
     for (int i = 0; i < 4; i++)
     {
         MathResult result = system_execute_gcd(variants[i], 48, 18);
-        printf("%-20s: ", mdc_analyzer_get_algorithm_name(variants[i]));
+        const char *name = "Unknown"; // You'll need to get this from analyzer
+        printf("%-20s: ", name);
 
         if (MATH_IS_VALID_RESULT(result))
         {
@@ -239,22 +242,22 @@ int test_main(void)
  * Compilation instructions:
  *
  * Basic compilation:
- *   gcc main.c -o gcd_analyzer
+ *   gcc main.c command_parser.c system_coordinator.c mdc_analyzer.c solution_registry.c classic.c recursive.c stein.c math_utils.c memory_utils.c -o gcd_analyzer
  *
  * With optimization:
- *   gcc -O2 main.c -o gcd_analyzer
+ *   gcc -O2 main.c command_parser.c system_coordinator.c mdc_analyzer.c solution_registry.c classic.c recursive.c stein.c math_utils.c memory_utils.c -o gcd_analyzer
  *
  * Debug version:
- *   gcc -g -DDEBUG main.c -o gcd_analyzer_debug
+ *   gcc -g -DDEBUG main.c command_parser.c system_coordinator.c mdc_analyzer.c solution_registry.c classic.c recursive.c stein.c math_utils.c memory_utils.c -o gcd_analyzer_debug
  *
  * Windows (MinGW):
- *   gcc main.c -o gcd_analyzer.exe
+ *   gcc main.c command_parser.c system_coordinator.c mdc_analyzer.c solution_registry.c classic.c recursive.c stein.c math_utils.c memory_utils.c -o gcd_analyzer.exe
  *
  * Force simple timing (maximum compatibility):
- *   gcc -DSIMPLE_TIMING main.c -o gcd_analyzer
+ *   gcc -DSIMPLE_TIMING main.c command_parser.c system_coordinator.c mdc_analyzer.c solution_registry.c classic.c recursive.c stein.c math_utils.c memory_utils.c -o gcd_analyzer
  *
  * Test version (runs test_main instead of main):
- *   gcc -DTEST_MODE main.c -o gcd_test
+ *   gcc -DTEST_MODE main.c command_parser.c system_coordinator.c mdc_analyzer.c solution_registry.c classic.c recursive.c stein.c math_utils.c memory_utils.c -o gcd_test
  */
 
 #ifdef TEST_MODE

@@ -9,52 +9,17 @@
  * system features without over-complicated command structures.
  */
 
-#include "../../core/orchestration/system_coordinator.c"
+// ✅ CORRECTED: Include headers instead of .c files
+#include "command_parser.h"
+#include "../../core/orchestration/system_coordinator.h"
+#include "../../challenges/greatest_common_divisor/challenge_services/mdc_analyzer.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
 // ============================================================================
-// COMMAND DEFINITIONS
-// ============================================================================
-
-/**
- * @brief Available CLI commands
- */
-typedef enum
-{
-    CMD_HELP,        /**< Show help information */
-    CMD_LIST,        /**< List available algorithms */
-    CMD_EXECUTE,     /**< Execute specific algorithm */
-    CMD_COMPARE,     /**< Compare all algorithms */
-    CMD_BENCHMARK,   /**< Run benchmark */
-    CMD_EXTENDED,    /**< Execute Extended Euclidean */
-    CMD_FASTEST,     /**< Find fastest algorithm */
-    CMD_STATUS,      /**< Show system status */
-    CMD_TEST,        /**< Run self-test */
-    CMD_INTERACTIVE, /**< Interactive mode */
-    CMD_UNKNOWN      /**< Unknown command */
-} CliCommand;
-
-/**
- * @brief Command argument structure
- */
-typedef struct
-{
-    GcdInteger operand_a;
-    GcdInteger operand_b;
-    char algorithm_name[64];
-    GcdAlgorithmVariant variant;
-    MathNatural iterations;
-    bool has_operands;
-    bool has_algorithm;
-    bool has_iterations;
-    bool verbose;
-} CommandArgs;
-
-// ============================================================================
-// COMMAND PARSING
+// COMMAND PARSING IMPLEMENTATION
 // ============================================================================
 
 /**
@@ -250,7 +215,7 @@ CliCommand parse_arguments(int argc, char *argv[], CommandArgs *args)
 }
 
 // ============================================================================
-// COMMAND EXECUTION
+// COMMAND EXECUTION IMPLEMENTATIONS
 // ============================================================================
 
 /**
