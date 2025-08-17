@@ -15,7 +15,7 @@
 #include "../solutions/euclidean_family/implementations/classic.c"
 #include "../solutions/euclidean_family/implementations/recursive.c"
 #include "../solutions/binary_family/implementations/stein.c"
-#include "../../../infrastructure/utilities/memory_utils.c"
+#include "../../../infrastructure/utilities/memory_utils.h"
 #include <stdio.h>
 #include <string.h>
 

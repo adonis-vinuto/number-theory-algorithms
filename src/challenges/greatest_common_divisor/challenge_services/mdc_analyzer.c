@@ -11,8 +11,8 @@
  */
 
 #include "../challenge_definition.h"
-#include "../../../infrastructure/utilities/math_utils.c"
-#include "../../../infrastructure/utilities/memory_utils.c"
+#include "../../../infrastructure/utilities/math_utils.h"
+#include "../../../infrastructure/utilities/memory_utils.h"
 #include <stdio.h>
 
 // ============================================================================

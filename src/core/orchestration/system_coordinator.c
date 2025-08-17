@@ -14,8 +14,8 @@
 
 #include "../../challenges/greatest_common_divisor/challenge_services/solution_registry.h"
 #include "../../challenges/greatest_common_divisor/challenge_services/mdc_analyzer.h"
-#include "../../infrastructure/utilities/math_utils.c"
-#include "../../infrastructure/utilities/memory_utils.c"
+#include "../../infrastructure/utilities/math_utils.h"
+#include "../../infrastructure/utilities/memory_utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

@@ -4,6 +4,8 @@
         "mathematical_types.h": "c",
         "solution_spec.h": "c",
         "implementation_interface.h": "c",
-        "domain_types.h": "c"
+        "domain_types.h": "c",
+        "stdio.h": "c",
+        "math_utils.h": "c"
     }
 }

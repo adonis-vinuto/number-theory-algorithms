@@ -13,7 +13,7 @@
 #include "../../../../../core/interfaces/implementation_interface.h"
 #include "../../../domain_types.h"
 #include "../solution_spec.h"
-#include "../../../../../infrastructure/utilities/math_utils.c"
+#include "../../../../../infrastructure/utilities/math_utils.h"
 
 // ============================================================================
 // ORIGINAL ALGORITHM IMPLEMENTATIONS
