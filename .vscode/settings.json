@@ -6,6 +6,7 @@
         "implementation_interface.h": "c",
         "domain_types.h": "c",
         "stdio.h": "c",
-        "math_utils.h": "c"
+        "math_utils.h": "c",
+        "classic.h": "c"
     }
 }

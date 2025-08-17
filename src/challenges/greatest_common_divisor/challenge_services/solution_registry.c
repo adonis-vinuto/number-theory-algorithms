@@ -12,10 +12,11 @@
 #include "../challenge_definition.h"
 #include "../solutions/euclidean_family/solution_spec.h"
 #include "../solutions/binary_family/solution_spec.h"
-#include "../solutions/euclidean_family/implementations/classic.c"
-#include "../solutions/euclidean_family/implementations/recursive.c"
-#include "../solutions/binary_family/implementations/stein.c"
 #include "../../../infrastructure/utilities/memory_utils.h"
+#include "../../../infrastructure/utilities/math_utils.h"
+#include "../solutions/euclidean_family/implementations/classic.h"
+#include "../solutions/euclidean_family/implementations/recursive.h"
+#include "../solutions/binary_family/implementations/stein.h"
 #include <stdio.h>
 #include <string.h>
 

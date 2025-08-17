@@ -14,6 +14,7 @@
 #include "../../../domain_types.h"
 #include "../solution_spec.h"
 #include "../../../../../infrastructure/utilities/math_utils.h"
+#include <limits.h>
 
 // ============================================================================
 // ORIGINAL ALGORITHM IMPLEMENTATIONS

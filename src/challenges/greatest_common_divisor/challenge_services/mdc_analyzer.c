@@ -11,6 +11,9 @@
  */
 
 #include "../challenge_definition.h"
+#include "../solutions/euclidean_family/implementations/classic.h"
+#include "../solutions/euclidean_family/implementations/recursive.h"
+#include "../solutions/binary_family/implementations/stein.h"
 #include "../../../infrastructure/utilities/math_utils.h"
 #include "../../../infrastructure/utilities/memory_utils.h"
 #include <stdio.h>
